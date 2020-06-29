@@ -34,21 +34,13 @@ function VideoCell({ video, isFocused, onMouseEnter }) {
     const videoPlayer = videoRef.current
 
     if (isFocused & !isPlaying) {
+      videoPlayer.play()
       setIsPlaying(true)
-      try {
-        videoPlayer.play()
-      } catch (error) {
-        console.error(error)
-      }
     }
 
     if (!isFocused && isPlaying) {
+      videoPlayer.pause()
       setIsPlaying(false)
-      try {
-        videoPlayer.pause()
-      } catch (error) {
-        console.error(error)
-      }
     }
   }, [isFocused, isPlaying])
 

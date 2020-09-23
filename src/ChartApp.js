@@ -1,20 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 
 // Instructions: Create a histogram chart displaying the frequency of each
 // number in the API response. The response returns an array of 100 random
 // values between 1-10.
+// Example: https://bnhansn.github.io/fw-widget-demo/?chart=true
 
 function fetchRandomNumbers() {
   return fetch(
     'https://www.random.org/integers/?num=100&min=1&max=10&col=1&base=10&format=plain'
   )
     .then((response) => response.text())
-    .then((data) => data.split('\n').filter((n) => n !== ''))
+    .then((data) =>
+      data
+        .split('\n')
+        .filter((n) => n !== '')
+        .map(Number)
+    )
 }
 
 export default function ChartApp() {
   const [numbers, setNumbers] = useState({})
-  const sortedEntries = Object.entries(numbers).sort((a, b) => b[1] - a[1])
+  const sortedEntries = useMemo(
+    () => Object.entries(numbers).sort((a, b) => b[1] - a[1]),
+    [numbers]
+  )
   const maxValue = sortedEntries[0] && sortedEntries[0][1]
 
   useEffect(() => {

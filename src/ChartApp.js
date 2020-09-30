@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react'
 
-// Instructions: Create a histogram chart displaying the frequency of each
-// number in the API response. The response returns an array of 100 random
-// values between 1-10.
-// Example: https://bnhansn.github.io/fw-widget-demo/?chart=true
+// Instructions: Create a histogram (bar) chart displaying the frequency of each
+// number in the fetchRandomNumbers API response. The response returns an array
+// of 100 integers between 1-10.
+// Example chart: https://bnhansn.github.io/fw-widget-demo/?chart=true
 
+// Example response: [2, 4, 4, 10, 1, 2, ...]
 function fetchRandomNumbers() {
   return fetch(
     'https://www.random.org/integers/?num=100&min=1&max=10&col=1&base=10&format=plain'
@@ -18,6 +19,16 @@ function fetchRandomNumbers() {
     )
 }
 
+function asyncCreateRandomNumbers() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const randomNumber = () => Math.ceil(Math.random() * 10)
+      const numbers = new Array(100).fill().map(randomNumber)
+      resolve(numbers)
+    }, 500)
+  })
+}
+
 export default function ChartApp() {
   const [numbers, setNumbers] = useState({})
   const sortedEntries = useMemo(
@@ -27,7 +38,7 @@ export default function ChartApp() {
   const maxValue = sortedEntries[0] && sortedEntries[0][1]
 
   useEffect(() => {
-    fetchRandomNumbers().then((data) => {
+    asyncCreateRandomNumbers().then((data) => {
       const dataSet = data.reduce((acc, number) => {
         acc[number] = (acc[number] || 0) + 1
         return acc

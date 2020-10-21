@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react'
 
 // Instructions: Create a histogram (bar) chart displaying the frequency of each
-// number in the fetchRandomNumbers API response. The response returns an array
-// of 100 integers between 1-10.
-// Example chart: https://bnhansn.github.io/fw-widget-demo/?chart=true
+// number in the fetchRandomNumbers response. The function returns an array of
+// 100 integers between 1-10.
+// Example solution: https://bnhansn.github.io/fw-widget-demo/#/chart
 
 // Example response: [2, 4, 4, 10, 1, 2, ...]
 function fetchRandomNumbers() {
@@ -40,7 +40,8 @@ export default function ChartApp() {
   useEffect(() => {
     asyncCreateRandomNumbers().then((data) => {
       const dataSet = data.reduce((acc, number) => {
-        acc[number] = (acc[number] || 0) + 1
+        const count = acc[number] || 0
+        acc[number] = count + 1
         return acc
       }, {})
       setNumbers(dataSet)

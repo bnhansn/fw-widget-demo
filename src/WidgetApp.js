@@ -1,8 +1,60 @@
 import React, { useEffect, useRef, useState } from 'react'
-import videos from './videos'
+
+// Instructions: Refactor this App to function like the demo https://bnhansn.github.io/fw-widget-demo
+// 1. Fetch videos from this url https://next-demo-flax.vercel.app/api/suggested_videos
+// 2. The first video should start playing automatically
+// 3. When the mouse hovers over a video, that video should start playing and all others should pause
+// 4. When a video starts playing, the caption should fade out
+
+// const video = {
+//   caption: 'Mars Rover',
+//   file_url:
+//     'https://cdn1.fireworktv.com/medias/2020/1/17/1579225505-saivlmkp/watermarked/540/techembed3*.mp4',
+//   id: 1,
+//   thumbnail_url:
+//     'https://cdn1.fireworktv.com/medias/2020/1/17/1579225697-jifpemag/540_960/techembed3.jpg'
+// }
+
+// export default function App() {
+//   const videoRef = useRef()
+
+//   useEffect(() => {
+//     videoRef.current.play()
+//     // videoRef.current.pause() pauses the video
+//   }, [])
+
+//   return (
+//     <>
+//       <video
+//         loop
+//         muted
+//         ref={videoRef}
+//         src={video.file_url}
+//         poster={video.thumbnail_url}
+//         style={{
+//           width: '154px',
+//           height: '250px'
+//         }}
+//       />
+//     </>
+//   )
+// }
+
+async function fetchVideos() {
+  return await fetch(
+    'https://next-demo-flax.vercel.app/api/suggested_videos'
+  ).then((response) => response.json())
+}
 
 export default function App() {
   const [focusedIndex, setFocusedIndex] = useState(0)
+  const [videos, setVideos] = useState([])
+
+  useEffect(() => {
+    fetchVideos().then(({ videos }) => {
+      setVideos(videos)
+    })
+  }, [])
 
   return (
     <div
